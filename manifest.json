@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "CurrencyFx",
+  "version": "1.0",
+  "description": "Auto-detects and converts currencies on any webpage. Supports 16 currencies with live exchange rates. One click to convert, one click to revert.",
+  "author": "Nishant Singh",
+  "homepage_url": "https://github.com/nishantsinghf11/currency-extension",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "*://*/*"
+  ],
+  "action": {
+    "default_title": "CurrencyFx - Convert currencies instantly",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

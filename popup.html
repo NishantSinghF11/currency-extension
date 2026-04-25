@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dollar Converter</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kalam:wght@700&display=swap');
+
+    *, *::before, *::after { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+
+    :root {
+      --glass-dark: rgba(10, 10, 20, 0.7);
+      --glass-light: rgba(255, 255, 255, 0.08);
+      --glass-lighter: rgba(255, 255, 255, 0.12);
+      --accent: #00d4ff;
+      --accent-glow: #00d4ff;
+      --text-primary: #f5f7ff;
+      --text-secondary: #b0bcc9;
+      --text-tertiary: #7a8fa8;
+      --danger: #ff4757;
+      --success: #26de81;
+      --border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+      width: 360px;
+      background: linear-gradient(135deg, #0a0a14 0%, #1a1a2e 100%);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      max-height: 100vh;
+      backdrop-filter: blur(10px);
+    }
+
+    /* ─── Header ─── */
+    .header {
+      background: var(--glass-dark);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 8px 32px rgba(0, 212, 255, 0.05);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent), #0099ff);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Kalam', cursive;
+      font-weight: 700;
+      font-size: 16px;
+      color: #000;
+      box-shadow: 0 8px 16px rgba(0, 212, 255, 0.3);
+    }
+
+    .logo-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text span {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* ─── Toggle Switch ─── */
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toggle-label {
+      font-size: 10px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 500;
+    }
+
+    .toggle {
+      position: relative;
+      width: 44px;
+      height: 24px;
+    }
+
+    .toggle input { 
+      opacity: 0; 
+      width: 0; 
+      height: 0; 
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: var(--glass-light);
+      border: 1px solid var(--border-color);
+      border-radius: 99px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .slider::before {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 2px;
+      top: 2px;
+      background: white;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    input:checked + .slider { 
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.5), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    input:checked + .slider::before {
+      transform: translateX(20px);
+    }
+
+    /* ─── Body ─── */
+    .body {
+      padding: 20px;
+    }
+
+    body::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    body::-webkit-scrollbar-thumb {
+      background: rgba(0, 212, 255, 0.3);
+      border-radius: 3px;
+    }
+
+    body::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 212, 255, 0.5);
+    }
+
+    .section-label {
+      font-size: 10px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    /* ─── Selects ─── */
+    .currency-select {
+      width: 100%;
+      background: var(--glass-light);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      padding: 12px 14px;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      backdrop-filter: blur(10px);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300d4ff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 32px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .currency-select option {
+      background: #1a1a2e;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+    }
+
+    .currency-select option:hover {
+      background: #2a2a3e;
+    }
+
+    .currency-select option:checked {
+      background: linear-gradient(#00d4ff, #00d4ff);
+      background-color: #1a1a2e !important;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .currency-select:hover {
+      border-color: var(--accent);
+      background: var(--glass-lighter);
+      box-shadow: 0 4px 12px rgba(0, 212, 255, 0.15);
+    }
+
+    .currency-select:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: var(--glass-lighter);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    }
+
+    /* ─── Rate Display ─── */
+    .rate-display {
+      margin-top: 20px;
+      background: var(--glass-light);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 8px 32px rgba(0, 212, 255, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .rate-display:hover {
+      background: var(--glass-lighter);
+      border-color: var(--border-color);
+      box-shadow: 0 8px 32px rgba(0, 212, 255, 0.15);
+    }
+
+    .rate-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .rate-label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .rate-value {
+      font-size: 16px;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--accent), #0099ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .rate-updated {
+      font-size: 10px;
+      color: var(--text-tertiary);
+      margin-top: 8px;
+      font-weight: 400;
+    }
+
+    .rate-loading {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-align: center;
+      padding: 8px 0;
+      animation: shimmer 1.5s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    /* ─── Buttons ─── */
+    .convert-btn {
+      margin-top: 20px;
+      width: 100%;
+      background: linear-gradient(135deg, var(--accent), #0099ff);
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
+    }
+
+    .convert-btn:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0, 212, 255, 0.4);
+    }
+    
+    .convert-btn:active { 
+      transform: translateY(0);
+    }
+    
+    .convert-btn:disabled {
+      background: var(--glass-light);
+      color: var(--text-tertiary);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .revert-btn {
+      margin-top: 10px;
+      width: 100%;
+      background: var(--glass-light);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      padding: 11px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      font-weight: 500;
+    }
+
+    .revert-btn:hover {
+      border-color: var(--danger);
+      color: var(--danger);
+      background: rgba(255, 71, 87, 0.1);
+      box-shadow: 0 4px 12px rgba(255, 71, 87, 0.15);
+    }
+
+    .status {
+      margin-top: 14px;
+      font-size: 11px;
+      text-align: center;
+      min-height: 18px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .status.ok { 
+      color: var(--success);
+      text-shadow: 0 0 10px rgba(38, 222, 129, 0.3);
+    }
+    
+    .status.err { 
+      color: var(--danger);
+      text-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border-color);
+      margin: 20px 0;
+    }
+
+    /* ─── Quick Amounts ─── */
+    .quick-amounts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .quick-label {
+      font-size: 10px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .quick-chip {
+      background: var(--glass-light);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-align: center;
+      cursor: default;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .quick-chip:hover {
+      background: var(--glass-lighter);
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(0, 212, 255, 0.15);
+    }
+
+    .quick-chip span {
+      display: block;
+      font-size: 12px;
+      color: var(--text-primary);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .chip-label {
+      font-size: 9px !important;
+      color: var(--text-tertiary) !important;
+      font-weight: 400 !important;
+      margin-top: 0 !important;
+    }
+
+    /* ─── Convert Row ─── */
+    .convert-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      margin-bottom: 0;
+    }
+
+    .convert-col {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .arrow-col {
+      font-size: 20px;
+      background: linear-gradient(135deg, var(--accent), #0099ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      padding-bottom: 10px;
+      flex-shrink: 0;
+    }
+
+    /* ─── Detect Row ─── */
+    .detect-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .detect-badge {
+      flex: 1;
+      font-size: 10px;
+      padding: 7px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: var(--glass-light);
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      font-weight: 500;
+    }
+
+    .detect-badge.found {
+      border-color: var(--success);
+      color: var(--success);
+      background: rgba(38, 222, 129, 0.1);
+      box-shadow: 0 0 12px rgba(38, 222, 129, 0.2);
+    }
+
+    .detect-badge.scanning {
+      border-color: var(--text-tertiary);
+      color: var(--text-secondary);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .detect-badge.none {
+      border-color: var(--danger);
+      color: var(--danger);
+      background: rgba(255, 71, 87, 0.1);
+    }
+
+    .detect-badge.manual {
+      border-color: var(--border-color);
+      color: var(--text-tertiary);
+    }
+
+    @keyframes pulse { 
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(0.98); }
+    }
+
+    .detect-btn {
+      background: var(--glass-light);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-secondary);
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      padding: 7px 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+      backdrop-filter: blur(10px);
+      font-weight: 500;
+    }
+
+    .detect-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--glass-lighter);
+      box-shadow: 0 4px 12px rgba(0, 212, 255, 0.15);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">Fx</div>
+      <div class="logo-text">Currency<span>Fx</span></div>
+    </div>
+    <div class="toggle-wrap">
+      <span class="toggle-label">Live</span>
+      <label class="toggle">
+        <input type="checkbox" id="enableToggle" checked />
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="convert-row">
+      <div class="convert-col">
+        <div class="section-label">From</div>
+        <select class="currency-select" id="fromSelect"></select>
+      </div>
+      <div class="arrow-col">⇄</div>
+      <div class="convert-col">
+        <div class="section-label">To</div>
+        <select class="currency-select" id="toSelect"></select>
+      </div>
+    </div>
+
+    <!-- Auto-detect row -->
+    <div class="detect-row">
+      <div class="detect-badge scanning" id="detectBadge">🔍 Scanning page…</div>
+      <button class="detect-btn" id="detectBtn">Re-scan</button>
+    </div>
+
+    <div class="rate-display" id="rateDisplay">
+      <div class="rate-loading">Fetching live rate…</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="quick-label">Quick reference</div>
+    <div class="quick-amounts" id="quickAmounts">
+      <div class="quick-chip"><span id="qLabel1" class="chip-label">1 USD</span><span id="q1">—</span></div>
+      <div class="quick-chip"><span id="qLabel10" class="chip-label">10 USD</span><span id="q10">—</span></div>
+      <div class="quick-chip"><span id="qLabel100" class="chip-label">100 USD</span><span id="q100">—</span></div>
+    </div>
+
+    <button class="convert-btn" id="convertBtn">Convert This Page</button>
+    <button class="revert-btn" id="revertBtn">Revert to Original</button>
+    <div class="status" id="status"></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
