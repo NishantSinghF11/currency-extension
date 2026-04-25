@@ -2,7 +2,8 @@
   "manifest_version": 3,
   "name": "CurrencyFx",
   "version": "1.0",
-  "description": "Auto-detects and converts currencies on any webpage. Supports 16 currencies with live exchange rates. One click to convert, one click to revert.",
+  // "description": "Auto-detects and converts currencies on any webpage. Supports 16 currencies with live exchange rates. One click to convert, one click to revert.",
+  "description": "Auto-detects and converts currencies on any webpage with live exchange rates. One click to convert, one click to revert."
   "author": "Nishant Singh",
   "homepage_url": "https://github.com/nishantsinghf11/currency-extension",
   "permissions": [
