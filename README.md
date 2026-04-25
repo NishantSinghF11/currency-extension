@@ -1,15 +1,15 @@
 # 💱 CurrencyFx — Browser Extension
 
-Instantly convert USD prices on **any webpage** to your preferred currency using live exchange rates.
+Auto-detects and converts currencies on any webpage. Supports 16 currencies with live exchange rates. One click to convert, one click to revert.
 
 
 ![Alt text](logo.png)
 
 
 ## Features
-- 🔍 Auto-detects `$` amounts on any page (handles `$1,234.56`, `$10K`, `$2M`, etc.)
+- 🔍 Auto-detects currency amounts on any page (handles `$1,234.56`, `€100`, `£50`, `¥1000`, etc.)
 - 💹 Live exchange rates via [open.er-api.com](https://open.er-api.com) (free, no key needed)
-- 15 currencies: INR, EUR, GBP, JPY, CAD, AUD, CHF, CNY, SGD, MXN, BRL, KRW, AED, SAR, THB
+- 16 currencies: USD, INR, EUR, GBP, JPY, CAD, AUD, CHF, CNY, SGD, MXN, BRL, KRW, AED, SAR, THB
 - ⚡ One-click convert / revert
 - 🌙 Dark themed popup UI
 
@@ -31,6 +31,9 @@ Instantly convert USD prices on **any webpage** to your preferred currency using
 5. Click **"Revert to Original"** to undo
 
 ---
+
+![Alt text](imagetile.png)
+
 
 ## Files
 ```
