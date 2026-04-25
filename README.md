@@ -20,7 +20,7 @@ Instantly convert USD prices on **any webpage** to your preferred currency using
 5. The extension icon appears in your toolbar — click it!
 
 ### Usage
-1. Click the **DollarFx** icon in your browser toolbar
+1. Click the **CurrencyFx** icon in your browser toolbar
 2. Choose your target currency from the dropdown
 3. The live rate is fetched automatically
 4. Click **"Convert This Page"** — all `$` prices on the current page are converted inline
