@@ -1,6 +1,10 @@
-# 💱 DollarFx — Browser Extension
+# 💱 CurrencyFx — Browser Extension
 
 Instantly convert USD prices on **any webpage** to your preferred currency using live exchange rates.
+
+
+![Alt text](logo.png)
+
 
 ## Features
 - 🔍 Auto-detects `$` amounts on any page (handles `$1,234.56`, `$10K`, `$2M`, etc.)
@@ -43,3 +47,4 @@ currency-extension/
 
 ## API Used
 [open.er-api.com](https://open.er-api.com/v6/latest/USD) — Free, no API key required, updates daily.
+
